@@ -4,6 +4,13 @@ const app = express();
 app.use(express.json());
 
 let count = 0;
+function sendDiscord(msg) {
+    fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: msg })
+    });
+}
 
 // ================= UI หน้าแรก =================
 app.get('/', (req, res) => {
@@ -148,7 +155,21 @@ function reset() {
     .then(() => alert("รีเซ็ตแล้ว"));
 }
 </script>
+const fetch = require('node-fetch');
 
+const WEBHOOK_URL =https://discord.com/api/webhooks/1486271797337919620/n_YLJczABIKbhzxH98uyobh4cU7mD8d8wnVBovLMrZC_H9zXuOmCdSDdsfNsbPnBG9bT
+
+function sendDiscord(msg) {
+    fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            content: msg
+        })
+    });
+}
 </body>
 </html>
 `);
@@ -158,14 +179,14 @@ function reset() {
 app.get('/api/count', (req, res) => {
     res.json({ count });
 });
-
 app.post('/api/in', (req, res) => {
     count++;
+    sendDiscord("👤 มีคนเข้า! ตอนนี้: " + count);
     res.json({ count });
 });
-
 app.post('/api/out', (req, res) => {
     if (count > 0) count--;
+    sendDiscord("🚶‍♂️ มีคนออก! ตอนนี้: " + count);
     res.json({ count });
 });
 
